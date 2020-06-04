@@ -2,7 +2,7 @@ var MongoClient = require('mongodb').MongoClient,
     Server = require('mongodb').Server;
 // var client = new MongoClient(); // not working
 var client = MongoClient;
-client.connect('mongodb://dbadmin:test@localhost:27017/admin', 
+client.connect('mongodb://dbadmin:test@localhost:27017/testDB', 
                 { poolSize : 5, reconnectInterval : 500},
 function(err, db) {
     if (err) {
