@@ -1,0 +1,35 @@
+var mongoose = require('mongoose');
+var db = mongoose.connect("mongodb://localhost/words");
+var wordSchema = require('./word_schema').wordSchema;
+var Words = mongoose.model('Words', wordSchema);
+mongoose.connection.once('open', function() {
+
+    var testWord = new Words({
+        word: 'book',
+        first: 'b', last: 'k', size: 4,
+        letters: ['b', 'o', 'k'],
+        stats: {vowels: 2, consonants: 2}
+    });
+
+    testWord.save(function(err, doc) {
+        console.log("\nSaved document: " + doc);
+    });
+
+    var query = Words.findOne().where('word', 'book');
+    query.exec(function(err, doc) {
+        console.log("Is Document New? " + doc.isNew);
+        console.log("\nBefore Save: ");
+        console.log(doc.toJSON());
+        doc.set('word', 'Book');
+        doc.set('first', 'B');
+        console.log("\nModified Fields: ");
+        console.log(doc.modifiedPaths());
+        doc.save(function(err) {
+            Words.findOne({word: 'Book'}, function(err, doc) {
+                console.log("\nAfter Save: ");
+                console.log(doc.toJSON());
+                mongoose.disconnect();
+            });
+        });
+    });
+});
