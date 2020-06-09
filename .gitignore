@@ -1,3 +1,6 @@
 *.txt
 data/db/*
 node_modules/*
+*.crt
+*.csr
+*.pem
